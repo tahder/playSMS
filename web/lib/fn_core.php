@@ -168,7 +168,7 @@ if (!function_exists('_')) {
 	}
 }
 
-function core_query_sanitize($var) {
+function core_sanitize_query($var) {
 	$var = str_replace("/", "", $var);
 	$var = str_replace("|", "", $var);
 	$var = str_replace("\\", "", $var);
@@ -539,10 +539,10 @@ function core_display_credit($float) {
 /**
  * Generates a new string, for example a new password
  */
-function core_get_random_string($length = 8, $valid_chars = '') {
+function core_get_random_string($length = 16, $valid_chars = '') {
 	$valid_chars = str_replace(' ', '', $valid_chars);
 	if (!$valid_chars) {
-		$valid_chars = "abcdefghjkmnpqrstuxyvwzABCDEFGHJKLMNPQRSTUXYVWZ@#$%&";
+		$valid_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()1234567890";
 	}
 	
 	$valid_char_len = strlen($valid_chars);
@@ -558,7 +558,7 @@ function core_get_random_string($length = 8, $valid_chars = '') {
  * Sanitize username
  */
 function core_sanitize_username($username) {
-	$username = preg_replace("/[^A-Za-z0-9\.\-\_]/", '', $username);
+	$username = preg_replace("/[^a-z\d._-]/i", '', $username);
 	return $username;
 }
 

@@ -18,7 +18,7 @@ if (_OP_ == 'forgot') {
 					$db_result = dba_query($db_query);
 					if ($db_row = dba_fetch_array($db_result)) {
 						if ($password = $db_row['password']) {
-							$tmp_password = core_get_random_string();
+							$tmp_password = core_get_random_string(16);
 							$tmp_password_coded = md5($tmp_password);
 							if (registry_update(1, 'auth', 'tmp_password', array(
 								$username => $tmp_password_coded 
@@ -98,6 +98,11 @@ if (_OP_ == 'forgot') {
 			$show_web_title = FALSE;
 		}
 	}
+
+	$lastpost = array(
+		'username' => _lastpost('username'),
+		'email' => _lastpost('email')
+	);
 	
 	// captcha
 	$captcha = new CaptchaBuilder();
@@ -128,7 +133,10 @@ if (_OP_ == 'forgot') {
 			'enable_register' => $core_config['main']['enable_register'],
 			'enable_logo' => $enable_logo,
 			'show_web_title' => $show_web_title 
-		) 
+		),
+		'injects' => array(
+			'lastpost'
+		)
 	);
 	
 	_p(tpl_apply($tpl));

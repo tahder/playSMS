@@ -63,7 +63,7 @@ function user_getdatabyusername($username) {
 }
 
 function user_getfieldbyuid($uid, $field) {
-	$field = core_query_sanitize($field);
+	$field = core_sanitize_query($field);
 	if ($uid && $field) {
 		$db_query = "SELECT $field FROM " . _DB_PREF_ . "_tblUser WHERE flag_deleted='0' AND uid='$uid'";
 		$db_result = dba_query($db_query);
@@ -312,7 +312,7 @@ function user_add($data = array(), $forced = FALSE, $send_email = TRUE) {
 		}
 		
 		$data['username'] = core_sanitize_username($data['username']);
-		$data['password'] = (trim($data['password']) ? trim($data['password']) : core_get_random_string(10));
+		$data['password'] = (trim($data['password']) ? trim($data['password']) : core_get_random_string(16));
 		$register_password = $data['password'];
 		$data['password'] = md5($register_password);
 		$data['token'] = md5(uniqid($data['username'] . $data['password'], true));
